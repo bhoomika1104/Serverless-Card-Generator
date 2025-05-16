@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Card Generator</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    body {
+      background: #121212;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: rgba(20, 20, 20, 0.95);
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 800px;
+      width: 90%;
+      margin: 40px auto;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    h1, h2 {
+      text-align: center;
+      font-size: 2em;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 5px;
+      background: #2a2a2a;
+      color: #fff;
+      font-size: 1em;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background: #03dac5;
+      color: #000;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #00bfa5;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="cardTypeSelection">
+    <h1>Select Card Type</h1>
+    <button onclick="showSection('eventForm')">Event Card</button>
+    <button onclick="showSection('businessForm')">Business Card</button>
+    <button onclick="showSection('bulkForm')">Bulk Card Generator</button>
+  </div>
+
+  <!-- Business Form -->
+  <form class="container hidden" id="businessForm">
+    <h1>Create Business Card</h1>
+    <label>Full Name <input name="name" required></label>
+    <label>Designation <input name="designation"></label>
+    <label>Company <input name="company"></label>
+    <label>Email <input name="email"></label>
+    <label>Phone <input name="phone"></label>
+    <label>Website <input name="website"></label>
+    <label>LinkedIn <input name="linkedin"></label>
+    <label>Address <textarea name="address"></textarea></label>
+    <label>Logo URL <input name="logo"></label>
+    <button type="submit">Generate Business Card</button>
+    <button type="button" onclick="backHome()">Back</button>
+  </form>
+
+  <script>
+    const apiBusinessURL = "https://wuwxzw18gh.execute-api.us-east-1.amazonaws.com/default/BusinessCardGenerator";
+
+    function showSection(sectionId) {
+      if (sectionId === 'eventForm') {
+        window.open('event.html', '_blank'); // Open event.html in a new tab
+      } else if (sectionId === 'bulkForm') {
+        window.open('bulk.html', '_blank'); // Open bulk.html in a new tab
+      } else {
+        // Show business form
+        document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
+        document.getElementById(sectionId).classList.remove('hidden');
+      }
+    }
+
+    function backHome() {
+      document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
+      document.getElementById('cardTypeSelection').classList.remove('hidden');
+    }
+
+    // Business form submission
+    document.getElementById('businessForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const params = new URLSearchParams(new FormData(this)).toString();
+      window.open(${apiBusinessURL}?${params}, '_blank');
+    });
+  </script>
+</body>
+</html>
